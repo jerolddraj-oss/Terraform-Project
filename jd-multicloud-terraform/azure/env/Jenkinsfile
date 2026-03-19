@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Terraform Action')
+    }
+
+    environment {
+        ARM_CLIENT_ID       = credentials('AZURE_CLIENT_ID')
+        ARM_CLIENT_SECRET   = credentials('AZURE_CLIENT_SECRET')
+        ARM_TENANT_ID       = credentials('AZURE_TENANT_ID')
+        ARM_SUBSCRIPTION_ID = credentials('AZURE_SUBSCRIPTION_ID')
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir('azure') {
+                    bat 'C:\\Terraform\\terraform.exe init'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps {
+                dir('azure') {
+                    bat 'C:\\Terraform\\terraform.exe plan'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps {
+                dir('azure') {
+                    bat 'C:\\Terraform\\terraform.exe apply -auto-approve'
+                }
+            }
+        }
+
+        stage('Destroy Approval') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            steps {
+                input "⚠️ Confirm destroy of all resources?"
+            }
+        }
+
+        stage('Terraform Destroy') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            steps {
+                dir('azure') {
+                    bat 'C:\\Terraform\\terraform.exe destroy -auto-approve'
+                }
+            }
+        }
+    }
+}
