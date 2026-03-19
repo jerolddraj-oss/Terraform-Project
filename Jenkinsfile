@@ -2,10 +2,7 @@ pipeline {
     agent any
 
     parameters {
-    choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select Environment')
-    choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Terraform Action')
-        }
-        )
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Terraform Action')
     }
 
     environment {
@@ -16,6 +13,12 @@ pipeline {
     }
 
     stages {
+
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/your-repo.git'
+            }
+        }
 
         stage('Terraform Init') {
             steps {
