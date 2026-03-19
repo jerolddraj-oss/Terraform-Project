@@ -1,43 +1,35 @@
 pipeline {
     agent any
 
+    environment {
+        ARM_CLIENT_ID       = credentials('AZURE_CLIENT_ID')
+        ARM_CLIENT_SECRET   = credentials('AZURE_CLIENT_SECRET')
+        ARM_TENANT_ID       = credentials('AZURE_TENANT_ID')
+        ARM_SUBSCRIPTION_ID = credentials('AZURE_SUBSCRIPTION_ID')
+    }
+
     stages {
 
         stage('Terraform Init') {
             steps {
-               withCredentials([azureServicePrincipal('jenkins-sp')]) {
                 dir('azure') {
-                bat '''
-                echo %servicePrincipalId%
-                echo %tenantId%
-                set ARM_CLIENT_ID=%servicePrincipalId%
-                set ARM_CLIENT_SECRET=%servicePrincipalKey%
-                set ARM_TENANT_ID=%tenantId%
-                set ARM_SUBSCRIPTION_ID=%subscriptionId%
-
-                terraform init
-                '''
-                }
+                    bat 'terraform init'
                 }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                withCredentials([azureServicePrincipal('jenkins-sp')]) {
-                    dir('azure') {
-                        bat 'terraform plan'
-                    }
+                dir('azure') {
+                    bat 'terraform plan'
                 }
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                withCredentials([azureServicePrincipal('jenkins-sp')]) {
-                    dir('azure') {
-                        bat 'terraform apply -auto-approve'
-                    }
+                dir('azure') {
+                    bat 'terraform apply -auto-approve'
                 }
             }
         }
