@@ -1,6 +1,6 @@
  resource "azurerm_network_interface" "nic" {
 
-  count = 1
+  count = 2
 
   name                = "${var.vm_prefix}-nic-${count.index}"
   location            = var.location
