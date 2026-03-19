@@ -23,7 +23,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   name                = "${var.vm_prefix}-vm-${count.index}"
   resource_group_name = var.rg
   location            = var.location
-  size                = "Standard_B1s"
+  size                = "Standard_B2s"
 
   admin_username      = "azureadmin"
   admin_password      = "Password123!"
