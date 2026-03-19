@@ -16,7 +16,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/jerolddraj-oss/Terraform-Project.git'
+                checkout scm
             }
         }
 
