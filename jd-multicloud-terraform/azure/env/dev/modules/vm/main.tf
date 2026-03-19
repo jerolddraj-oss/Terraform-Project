@@ -1,6 +1,6 @@
  resource "azurerm_network_interface" "nic" {
 
-  count = 2
+  count = 1
 
   name                = "${var.vm_prefix}-nic-${count.index}"
   location            = var.location
@@ -18,7 +18,7 @@
 
  resource "azurerm_windows_virtual_machine" "vm" {
 
-  count = 2
+  count = 1
 
   name                = "${var.vm_prefix}-vm-${count.index}"
   resource_group_name = var.rg
