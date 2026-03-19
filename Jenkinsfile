@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
         choice(name: 'CLOUD', choices: ['azure', 'aws', 'gcp'], description: 'Select Cloud')
-        choice(name: 'ENV', choices: ['dev'], description: 'Select Environment')
+        choice(name: 'ENV', choices: ['dev', 'prod', 'qa'], description: 'Select Environment')
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Terraform Action')
     }
 
