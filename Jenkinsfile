@@ -25,7 +25,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 script {
-                    def path = "${params.CLOUD}/evn/${params.ENV}"
+                    def path = "jd-multicloud-terraform/${params.CLOUD}/env/${params.ENV}"
                     dir(path) {
                         bat 'C:\\Terraform\\terraform.exe init'
                     }
@@ -39,7 +39,7 @@ pipeline {
             }
             steps {
                 script {
-                    def path = "${params.CLOUD}/evn/${params.ENV}"
+                    def path = "jd-multicloud-terraform/${params.CLOUD}/env/${params.ENV}"
                     dir(path) {
                         bat 'C:\\Terraform\\terraform.exe apply -auto-approve'
                     }
@@ -53,7 +53,7 @@ pipeline {
             }
             steps {
                 script {
-                    def path = "${params.CLOUD}/evn/${params.ENV}"
+                    def path = "jd-multicloud-terraform/${params.CLOUD}/env/${params.ENV}"
                     dir(path) {
                         bat 'C:\\Terraform\\terraform.exe destroy -auto-approve'
                     }
