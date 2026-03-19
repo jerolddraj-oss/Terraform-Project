@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "nic" {
+# resource "azurerm_network_interface" "nic" {
 
   count = 2
 
@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "nic" {
 
 }
 
-resource "azurerm_windows_virtual_machine" "vm" {
+# resource "azurerm_windows_virtual_machine" "vm" {
 
   count = 2
 
@@ -39,7 +39,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   }
 
-  source_image_reference {
+  # source_image_reference {
 
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
