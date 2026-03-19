@@ -13,7 +13,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 dir('azure') {
-                    bat 'terraform init'
+                    bat 'C:\\Terraform\\terraform.exe init'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 dir('azure') {
-                    bat 'terraform plan'
+                    bat 'C:\\Terraform\\terraform.exe plan'
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
         stage('Terraform Apply') {
             steps {
                 dir('azure') {
-                    bat 'terraform apply -auto-approve'
+                    bat 'C:\\Terraform\\terraform.exe apply -auto-approve'
                 }
             }
         }
