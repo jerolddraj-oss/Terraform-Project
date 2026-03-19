@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/jerolddraj-oss/Terraform-Project.git'
-            }
-        }
-
         stage('Terraform Init') {
             steps {
                 withCredentials([azureServicePrincipal('jenkins-sp')]) {
