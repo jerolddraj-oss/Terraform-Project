@@ -2,6 +2,8 @@ pipeline {
     agent any
 
     parameters {
+        choice(name: 'CLOUD', choices: ['azure', 'aws', 'gcp'], description: 'Select Cloud')
+        choice(name: 'ENV', choices: ['dev'], description: 'Select Environment')
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Terraform Action')
     }
 
@@ -22,19 +24,11 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                dir('azure') {
-                    bat 'C:\\Terraform\\terraform.exe init'
-                }
-            }
-        }
-
-        stage('Terraform Plan') {
-            when {
-                expression { params.ACTION == 'apply' }
-            }
-            steps {
-                dir('azure') {
-                    bat 'C:\\Terraform\\terraform.exe plan'
+                script {
+                    def path = "${params.CLOUD}/evn/${params.ENV}"
+                    dir(path) {
+                        bat 'C:\\Terraform\\terraform.exe init'
+                    }
                 }
             }
         }
@@ -44,18 +38,12 @@ pipeline {
                 expression { params.ACTION == 'apply' }
             }
             steps {
-                dir('azure') {
-                    bat 'C:\\Terraform\\terraform.exe apply -auto-approve'
+                script {
+                    def path = "${params.CLOUD}/evn/${params.ENV}"
+                    dir(path) {
+                        bat 'C:\\Terraform\\terraform.exe apply -auto-approve'
+                    }
                 }
-            }
-        }
-
-        stage('Destroy Approval') {
-            when {
-                expression { params.ACTION == 'destroy' }
-            }
-            steps {
-                input "⚠️ Confirm destroy of all resources?"
             }
         }
 
@@ -64,8 +52,11 @@ pipeline {
                 expression { params.ACTION == 'destroy' }
             }
             steps {
-                dir('azure') {
-                    bat 'C:\\Terraform\\terraform.exe destroy -auto-approve'
+                script {
+                    def path = "${params.CLOUD}/evn/${params.ENV}"
+                    dir(path) {
+                        bat 'C:\\Terraform\\terraform.exe destroy -auto-approve'
+                    }
                 }
             }
         }
