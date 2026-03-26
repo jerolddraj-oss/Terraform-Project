@@ -16,7 +16,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: env/dev   # 🔥 change based on your structure
+        working-directory: terraform-infra/env/dev     # 🔥 change based on your structure
 
     steps:
     # Checkout code
